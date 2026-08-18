@@ -7,26 +7,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# تخصيص صفحات المشروع لتغيير اسم app إلى عنوان واضح
-pages = {
-    "المنصة الرئيسية": [
-        st.Page("app.py", title="الرئيسية 🏠", default=True),
-    ],
-    "أقسام المعلم": [
-        st.Page("pages/1_الرئيسية.py", title="المكتبة الرقمية"),
-        st.Page("pages/2_الخطة_والتحضير.py", title="الخطة والتحضير"),
-        st.Page("pages/3_العروض_التقديمية.py", title="العروض التقديمية"),
-        st.Page("pages/4_المختبر_والتجارب.py", title="المختبر والتجارب"),
-        st.Page("pages/5_التقييمات_والشهادات.py", title="التقييمات والشهادات"),
-        st.Page("pages/6_مؤشر_التقدم.py", title="مؤشر التقدم"),
-        st.Page("pages/7_كشوف_الحضور.py", title="كشوف الحضور"),
-        st.Page("pages/8_تحليل_النتائج.py", title="تحليل النتائج"),
-    ]
-}
-
-pg = st.navigation(pages)
-
-# تخصيص CSS شامل لتلوين التطبيق بالكامل بالفايب الأحمر (بما فيها الـ Sidebar والثبات في اليسار)
+# تخصيص CSS شامل لتلوين التطبيق بالكامل بالفايب الأحمر
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
@@ -37,17 +18,10 @@ st.markdown("""
         text-align: right;
     }
 
-    /* تثبيت الشريط الجانبي في اليسار وتلوينه بدرجة حمراء خفيفة وراقية */
+    /* تلوين الشريط الجانبي بالكامل بدرجة حمراء خفيفة وراقية */
     [data-testid="stSidebar"] {
-        background-color: #FFF5F5 !important;
-        border-left: 1px solid #FFCDD2 !important;
-        right: auto !important;
-        left: 0 !important;
-        direction: ltr !important;
-    }
-    [data-testid="stSidebar"] * {
-        direction: rtl !important;
-        text-align: right !important;
+        background-color: #FFF5F5;
+        border-left: 1px solid #FFCDD2;
     }
 
     /* الهيدر الأحمر الفاخر */
@@ -125,9 +99,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
-# تشغيل التنقل المخصص
-pg.run()
 
 # نظام إدخال اسم المعلم ديناميكياً
 if 'teacher_name' not in st.session_state:
