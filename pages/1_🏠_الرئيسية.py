@@ -1,50 +1,27 @@
 import streamlit as st
 
-st.set_page_config(page_title="الرئيسية - Tech-Muallim", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="المكتبة الرقمية", layout="wide")
 
 st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
-    html, body, [class*="css"] { font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; }
-    [data-testid="stSidebar"] { background-color: #FFF5F5; border-left: 1px solid #FFCDD2; }
-    .main-header { background: linear-gradient(135deg, #D32F2F 0%, #B71C1C 100%); padding: 30px; border-radius: 16px; color: white; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3); }
-    .stButton>button { background-color: #D32F2F; color: white; border-radius: 8px; border: none; padding: 8px 20px; font-weight: 700; font-family: 'Cairo', sans-serif; }
-    .stButton>button:hover { background-color: #B71C1C; color: white; }
-    div[data-testid="stMetric"] { background-color: #FFFFFF; padding: 15px; border-radius: 12px; border: 1px solid #FFCDD2; }
-    </style>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap');
+    body { font-family: 'Cairo', sans-serif; background-color: #f8f9fa; }
+    .card { background-color: white; padding: 25px; border-radius: 15px; border: 1px solid #e0e0e0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    h1, h2 { color: #b71c1c; }
+    .stButton>button { border: 1px solid #d32f2f; color: #d32f2f; background: white; border-radius: 8px; width: 100%; font-weight: bold; }
+    .stButton>button:hover { background: #d32f2f; color: white; }
+</style>
 """, unsafe_allow_html=True)
 
-st.title("🏠 المكتبة الرقمية وأغلفة المناهج الثانوية")
-st.markdown("---")
+st.markdown('<div class="card"><h1>المكتبة الرقمية</h1><p>اختر المقرر الدراسي لتفعيل السياق التعليمي.</p></div>', unsafe_allow_html=True)
 
-teacher = st.session_state.get('teacher_name', 'الاستاذ/ة')
-st.info(f"مرحباً بك يا {teacher}. يمكنك اختيار المقرر الدراسي أو رفع كتاب خارجي لتفعيل السياق.")
-
-st.markdown("### 📂 اختر مقرر الفيزياء والفصل الدراسي لتفعيل السياق:")
-physics_courses = [
-    {"code": "فيز 102", "name": "فيزياء 102"},
-    {"code": "فيز 210", "name": "فيزياء 210"},
-    {"code": "فيز 217", "name": "فيزياء 217"},
-    {"code": "فيز 218", "name": "فيزياء 218"},
-    {"code": "فيز 219", "name": "فيزياء 219"}
-]
-
-cols = st.columns(len(physics_courses))
-for i, course in enumerate(physics_courses):
-    with cols[i]:
-        st.markdown(f"### ⚛️ {course['code']}")
-        st.write(course['name'])
-        semester = st.selectbox("اختر الفصل:", ["الفصل الأول", "الفصل الثاني"], key=f"sem_{course['code']}")
-        if st.button(f"تفعيل {course['code']}", key=f"btn_{course['code']}"):
-            st.session_state['selected_book'] = f"{course['name']} ({course['code']}) - {semester}"
-            st.success("تم التفعيل!")
-
-if 'selected_book' in st.session_state:
-    st.warning(f"📌 المقرر المفعل حالياً: **{st.session_state['selected_book']}**")
-
-st.markdown("---")
-st.subheader("📤 رفع كتاب خارجي جديد (PDF Upload)")
-uploaded_file = st.file_uploader("ارفع ملف الـ PDF هنا:", type=["pdf"])
-if uploaded_file is not None:
-    st.success(f"تم رفع الملف '{uploaded_file.name}' بنجاح وتفعيل سياقه!")
-    st.session_state['selected_book'] = f"كتاب خارجي: {uploaded_file.name}"
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown('<div class="card"><h3>اختيار المقرر</h3>', unsafe_allow_html=True)
+    course = st.selectbox("المقرر", ["فيز 102", "فيز 210", "فيز 217"])
+    st.button("تفعيل المقرر")
+    st.markdown('</div>', unsafe_allow_html=True)
+with col2:
+    st.markdown('<div class="card"><h3>رفع ملف خارجي</h3>', unsafe_allow_html=True)
+    st.file_uploader("اختر ملف PDF")
+    st.markdown('</div>', unsafe_allow_html=True)
