@@ -7,16 +7,21 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# تخصيص CSS متقدم لضبط الفايب الأحمر، الخطوط، وتنسيق الواجهة بالكامل
+# تخصيص CSS شامل لتلوين التطبيق بالكامل بالفايب الأحمر (بما فيها الـ Sidebar والخلفيات)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
 
-    /* فرض خط كايرو وتطبيق الاتجاه العربي على كافة العناصر */
     html, body, [class*="css"] {
         font-family: 'Cairo', sans-serif;
         direction: rtl;
         text-align: right;
+    }
+
+    /* تلوين الشريط الجانبي بالكامل بدرجة حمراء خفيفة وراقية */
+    [data-testid="stSidebar"] {
+        background-color: #FFF5F5;
+        border-left: 1px solid #FFCDD2;
     }
 
     /* الهيدر الأحمر الفاخر */
@@ -42,7 +47,7 @@ st.markdown("""
         opacity: 0.95;
     }
 
-    /* صندوق الترحيب المخصص بلون متناسق */
+    /* صندوق الترحيب الديناميكي */
     .welcome-box {
         background-color: #FFEBEE;
         border-right: 5px solid #D32F2F;
@@ -54,7 +59,7 @@ st.markdown("""
         margin-bottom: 25px;
     }
 
-    /* تخصيص أزرار الاستريملت لتأخذ الطابع الأحمر الفاخر */
+    /* تنسيق الأزرار باللون الأحمر */
     .stButton>button {
         background-color: #D32F2F;
         color: white;
@@ -72,7 +77,7 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(183, 28, 28, 0.4);
     }
 
-    /* تحسين مظهر بطاقات المقاييس (Metrics) */
+    /* تخصيص بطاقات المقاييس */
     div[data-testid="stMetric"] {
         background-color: #FFFFFF;
         padding: 15px;
@@ -94,6 +99,19 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# نظام إدخال اسم المعلم ديناميكياً (لا شيء محفوظ افتراضياً)
+if 'teacher_name' not in st.session_state:
+    st.session_state['teacher_name'] = ""
+
+# شريط جانبي لإعداد ملف المعلم ديناميكياً
+with st.sidebar:
+    st.markdown("### ⚙️ إعدادات المعلم")
+    input_name = st.text_input("أدخل اسم المعلم/ـة:", value=st.session_state['teacher_name'])
+    if input_name:
+        st.session_state['teacher_name'] = input_name
+    st.markdown("---")
+    st.info("💡 النظام ديناميكي بالكامل ويتكيف مع بيانات المستخدم المسجلة حالياً.")
+
 # واجهة الترحيب الرئيسية
 st.markdown("""
     <div class="main-header">
@@ -102,16 +120,22 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# رسالة الترحيب الشخصية بصندوق أنيق
-st.markdown("""
+# التحقق من الاسم الديناميكي وعرض الترحيب
+current_teacher = st.session_state.get('teacher_name', '')
+if current_teacher:
+    welcome_text = f"✨ أهلاً بك يا أستاذ(ة) {current_teacher} في منصتك التعليمية المتكاملة."
+else:
+    welcome_text = "✨ أهلاً بك في منصتك التعليمية المتكاملة (يرجى إدخال اسمك من القائمة الجانبية)."
+
+st.markdown(f"""
     <div class="welcome-box">
-        ✨ أهلاً بك يا أستاذة أروى في منصتك التعليمية المتكاملة.
+        {welcome_text}
     </div>
 """, unsafe_allow_html=True)
 
 st.markdown("---")
 
-# إحصائيات سريعة بتصميم منسق
+# إحصائيات سريعة متناسقة
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -125,5 +149,4 @@ with col3:
 
 st.markdown("---")
 st.markdown("### 🧭 دليل التنقل السريع")
-st.info(
-    "استخدم القائمة الجانبية (Sidebar) للانتقال بسلاسة بين الأقسام المختلفة للمنصة (الرئيسية، الخطة والتحضير، المختبر، التقييمات، تحليلات النتائج، وغيرها).")
+st.info("استخدم القائمة الجانبية (Sidebar) للانتقال بسلاسة بين الأقسام المختلفة للمنصة.")
